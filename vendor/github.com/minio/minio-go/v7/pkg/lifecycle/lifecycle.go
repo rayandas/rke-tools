@@ -54,8 +54,8 @@ func (n AbortIncompleteMultipartUpload) MarshalXML(e *xml.Encoder, start xml.Sta
 // specific period in the object's lifetime.
 type NoncurrentVersionExpiration struct {
 	XMLName                 xml.Name       `xml:"NoncurrentVersionExpiration" json:"-"`
-	NoncurrentDays          ExpirationDays `xml:"NoncurrentDays,omitempty"`
-	NewerNoncurrentVersions int            `xml:"NewerNoncurrentVersions,omitempty"`
+	NoncurrentDays          ExpirationDays `xml:"NoncurrentDays,omitempty" json:"NoncurrentDays,omitempty"`
+	NewerNoncurrentVersions int            `xml:"NewerNoncurrentVersions,omitempty" json:"NewerNoncurrentVersions,omitempty"`
 }
 
 // MarshalXML if n is non-empty, i.e has a non-zero NoncurrentDays or NewerNoncurrentVersions.
@@ -329,15 +329,15 @@ type Expiration struct {
 	XMLName      xml.Name           `xml:"Expiration,omitempty" json:"-"`
 	Date         ExpirationDate     `xml:"Date,omitempty" json:"Date,omitempty"`
 	Days         ExpirationDays     `xml:"Days,omitempty" json:"Days,omitempty"`
-	DeleteMarker ExpireDeleteMarker `xml:"ExpiredObjectDeleteMarker,omitempty"`
+	DeleteMarker ExpireDeleteMarker `xml:"ExpiredObjectDeleteMarker,omitempty" json:"ExpiredObjectDeleteMarker,omitempty"`
 }
 
 // MarshalJSON customizes json encoding by removing empty day/date specification.
 func (e Expiration) MarshalJSON() ([]byte, error) {
 	type expiration struct {
-		Date         *ExpirationDate `json:"Date,omitempty"`
-		Days         *ExpirationDays `json:"Days,omitempty"`
-		DeleteMarker ExpireDeleteMarker
+		Date         *ExpirationDate    `json:"Date,omitempty"`
+		Days         *ExpirationDays    `json:"Days,omitempty"`
+		DeleteMarker ExpireDeleteMarker `json:"ExpiredObjectDeleteMarker,omitempty"`
 	}
 
 	newexp := expiration{
